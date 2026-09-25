@@ -79,6 +79,9 @@ public class MainWindow extends JFrame {
     private final JLabel daysValue =
             new JLabel("0");
 
+    private final JLabel streakValue =
+            new JLabel("0");
+
     private final JLabel lastValue =
             new JLabel("—");
 
@@ -672,12 +675,13 @@ public class MainWindow extends JFrame {
         content.setOpaque(false);
 
         JPanel stats =
-                new JPanel(new GridLayout(1, 3, 12, 0));
+                new JPanel(new GridLayout(1, 4, 12, 0));
 
         stats.setOpaque(false);
 
         stats.add(statCard("Среднее", averageValue, "за всё время"));
         stats.add(statCard("Сохранено", daysValue, "дней"));
+        stats.add(statCard("Серия", streakValue, "дней подряд"));
         stats.add(statCard("Последняя оценка", lastValue, "из 10"));
 
         content.add(stats, BorderLayout.NORTH);
@@ -1293,6 +1297,16 @@ public class MainWindow extends JFrame {
         daysValue.setText(
                 String.valueOf(all.size())
         );
+
+        try {
+            streakValue.setText(
+                    String.valueOf(
+                            StreakCalculator.daysInARow(all)
+                    )
+            );
+        } catch (IllegalArgumentException e) {
+            streakValue.setText("—");
+        }
 
         entriesList.removeAll();
 
